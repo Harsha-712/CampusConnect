@@ -1,3 +1,0 @@
-<%@ page contentType="text/html;charset=UTF-8" isErrorPage="true" %><% request.setAttribute("bare",true); %><%@ include file="nav.jspf" %>
-<div class="wrap" style="max-width:520px;text-align:center;padding-top:80px"><div class="card"><h1 style="font-size:56px;margin:0">${pageContext.errorData.statusCode}</h1>
-<h3>${pageContext.errorData.statusCode==404?'Page not found':pageContext.errorData.statusCode==403?'Access denied':'Something went wrong'}</h3><p style="color:#6b7280">${pageContext.errorData.statusCode==403?'Your role cannot open this page.':'Please go back and try again.'}</p><a class="btn" href="${pageContext.request.contextPath}/login">Back to home</a></div></div>
