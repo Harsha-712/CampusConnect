@@ -1,0 +1,127 @@
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
+<%@ taglib prefix="fn" uri="jakarta.tags.functions" %>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>CampusConnect</title>
+<link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css">
+</head>
+
+<c:set var="cp" value="${pageContext.request.contextPath}"/>
+<c:set var="fwd" value="${requestScope['jakarta.servlet.forward.servlet_path']}"/>
+<c:set var="sp" value="${empty fwd ? pageContext.request.servletPath : fwd}"/>
+<c:set var="role" value="${sessionScope.role}"/>
+<c:set var="home" value="${role=='STUDENT'?'/student/dashboard':role=='CLUB_COORDINATOR'?'/coordinator/dashboard':role=='FACULTY_COORDINATOR'?'/faculty/dashboard':'/admin/dashboard'}"/>
+
+<body class="${empty sessionScope.userId||bare?'':'authed'}">
+
+<c:if test="${empty sessionScope.userId&&!bare}">
+<div class="pub">
+<a class="brand" href="${cp}/login">&#x1F393; CampusConnect</a>
+<span class="grow"></span>
+<a href="${cp}/login">Login</a>
+<a href="${cp}/register">Register</a>
+</div>
+</c:if>
+
+<c:if test="${not empty sessionScope.userId&&!bare}">
+
+<header class="top">
+<button class="burger" onclick="document.body.classList.toggle('open')" aria-label="Menu">&#x2630;</button>
+
+<a class="brand" href="${cp}${home}">&#x1F393; CampusConnect</a>
+
+<span class="grow"></span>
+
+<span class="user" title="Notifications">&#x1F514;</span>
+
+<span class="user">
+<span class="av">
+<c:out value="${fn:toUpperCase(fn:substring(sessionScope.username,0,1))}"/>
+</span>
+<c:out value="${sessionScope.username}"/>
+<span class="badge">${role}</span>
+</span>
+
+<a class="btn sm ghost" href="${cp}/logout">Logout</a>
+</header>
+
+<aside class="side">
+
+<a class="${fn:endsWith(sp,'/dashboard')?'act':''}" href="${cp}${home}">&#x1F3E0; Dashboard</a>
+
+<a class="${fn:startsWith(sp,'/clubs')?'act':''}" href="${cp}/clubs">&#x1F465; Clubs</a>
+
+<a class="${fn:startsWith(sp,'/events')?'act':''}" href="${cp}/events">&#x1F4C5; Events</a>
+
+<c:if test="${role=='STUDENT'}">
+
+<a class="${fn:endsWith(sp,'memberships')?'act':''}" href="${cp}/student/memberships">&#x1F3AB; My Memberships</a>
+
+<a class="${fn:startsWith(sp,'/student/certificate')?'act':''}" href="${cp}/student/certificates">&#x1F4DC; Certificates</a>
+
+<a class="${fn:endsWith(sp,'announcements')?'act':''}" href="${cp}/student/announcements">&#x1F4E2; Announcements</a>
+
+</c:if>
+
+<a class="${fn:startsWith(sp,'/shop')?'act':''}" href="${cp}/shop">&#x1F6CD; Shop &amp; Orders</a>
+
+<c:if test="${role=='CLUB_COORDINATOR'||role=='ADMIN'}">
+
+<small>Manage</small>
+
+<a class="${fn:endsWith(sp,'manage')?'act':''}" href="${cp}/coordinator/manage">&#x2699; Club Management</a>
+
+</c:if>
+
+<c:if test="${role=='CLUB_COORDINATOR'}">
+
+<a class="${fn:endsWith(sp,'stats')?'act':''}" href="${cp}/coordinator/stats">&#x1F4CA; Analytics</a>
+
+</c:if>
+
+<c:if test="${role=='FACULTY_COORDINATOR'}">
+
+<small>Monitor</small>
+
+<a href="${cp}/faculty/stats">&#x1F4CA; Reports</a>
+
+</c:if>
+
+<c:if test="${role=='ADMIN'}">
+
+<a class="${fn:endsWith(sp,'stats')?'act':''}" href="${cp}/admin/stats">&#x1F6E1; Admin &amp; Analytics</a>
+
+</c:if>
+
+<c:if test="${role=='STUDENT'}">
+
+<a class="${fn:endsWith(sp,'profile')?'act':''}" href="${cp}/student/profile">&#x1F464; Profile</a>
+
+</c:if>
+
+<c:if test="${role=='CLUB_COORDINATOR'||role=='ADMIN'}">
+
+<a href="${cp}/coordinator/events">&#x1F4C5; Manage Events</a>
+
+<a href="${cp}/coordinator/clubs">&#x1F3F7; Manage Clubs</a>
+
+<a href="${cp}/coordinator/members">&#x1F465; Members</a>
+
+<a href="${cp}/coordinator/attendance">&#x2705; Attendance</a>
+
+<a href="${cp}/coordinator/proposals">&#x1F4E6; Products</a>
+
+</c:if>
+
+<small>WEB TECH DEMOS</small>
+
+<a href="${cp}/xml-clubs.jsp">&#x1F9FE; XML Clubs</a>
+
+<a href="${cp}/cookie-demo">&#x1F36A; Cookies</a>
+
+</aside>
+
+</c:if>

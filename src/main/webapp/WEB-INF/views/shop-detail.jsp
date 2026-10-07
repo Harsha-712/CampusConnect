@@ -1,0 +1,6 @@
+<%@ page contentType="text/html;charset=UTF-8" %><%@ include file="nav.jspf" %>
+<div class="wrap"><a href="${cp}/shop">← Shop</a>
+<c:if test="${not empty p}"><div class="card"><h2>🛍 <c:out value="${p.name}"/></h2><span class="badge"><c:out value="${p.category}"/></span> <span class="badge"><c:out value="${p.club}"/></span><p><c:out value="${p.description}"/></p><h3>₹${p.price}</h3><p>${p.stock>0?'In stock: ':'Out of stock '}${p.stock>0?p.stock:''}</p>
+<form method="post" action="${cp}/shop"><input type="hidden" name="id" value="${p.id}"><button name="action" value="add" ${p.stock>0?'':'disabled'}>Add to cart</button></form></div></c:if>
+<c:if test="${not empty o}"><c:if test="${param.confirmed=='1'}"><div class="alert ok">✅ Payment successful — your order has been placed.</div></c:if><div class="card"><h2>Order #${o.id}</h2><p>Date: ${o.createdAt} · Status: <span class="badge ok">${o.status}</span> · Payment ref: ${o.paymentRef}</p>
+<table><tr><th>Product</th><th>Qty</th><th>Price</th><th>Line total</th></tr><c:forEach items="${items}" var="i"><tr><td><c:out value="${i.name}"/></td><td>${i.qty}</td><td>${i.price}</td><td>${i.line}</td></tr></c:forEach></table><h3>Total: ₹${o.total}</h3></div></c:if></div>

@@ -1,0 +1,6 @@
+<%@ page contentType="text/html;charset=UTF-8" %><%@ include file="nav.jspf" %>
+<div class="wrap"><a href="${cp}/clubs">← All clubs</a><div class="hero" style="margin-top:10px"><h2><c:out value="${club.name}"/></h2><span class="badge"><c:out value="${club.category}"/></span> <span class="badge ${status=='APPROVED'?'ok':status=='PENDING'?'warn':status=='REJECTED'?'err':''}">${status=='NONE'?'Not joined':status}</span>
+<p style="color:#c7d2fe"><c:out value="${club.description}"/></p></div>
+<div class="grid" style="margin-top:14px"><div class="stat">Members<b>${club.members}</b></div><div class="stat">Student coordinator<b style="font-size:18px"><c:out value="${club.coordinator}"/></b></div><div class="stat">Faculty coordinator<b style="font-size:18px"><c:out value="${club.faculty}"/></b></div></div>
+<c:if test="${status=='NONE'}"><form method="post" action="${cp}/clubs" onsubmit="return confirm('Request to join?')"><input type="hidden" name="clubId" value="${club.id}"><button>Join Club</button></form></c:if>
+<div class="card"><h3>Events</h3><c:forEach items="${events}" var="e"><p><a href="${cp}/events"><b><c:out value="${e.title}"/></b></a> · ${e.event_date}</p></c:forEach><c:if test="${empty events}"><div class="empty">No events yet</div></c:if></div></div>
